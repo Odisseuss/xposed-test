@@ -1,7 +1,7 @@
 import { UserRecordModel } from "../models/UserRecords";
 
 export const getUsers = (req: any, res: any) => {
-  UserRecordModel.findOne({}, (err: any, dbRes: any) => {
+  UserRecordModel.find({}, (err: any, dbRes: any) => {
     if (err) {
       res.status(500).json(null);
       console.log(err);
