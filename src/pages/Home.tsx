@@ -4,7 +4,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -12,6 +11,7 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
+
 export interface HomeProps {}
 
 const Home: React.FunctionComponent<HomeProps> = () => {
@@ -25,30 +25,31 @@ const Home: React.FunctionComponent<HomeProps> = () => {
       }
     }
   }, [records]);
-
-  return records && arrayOfRecords ? (
-    <Table variant="simple">
-      <TableCaption>User Records</TableCaption>
-      <Thead>
-        <Tr>
-          <Th>Email</Th>
-          <Th>Year of birth</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {arrayOfRecords.map((recordPair) => (
+  const renderRecords = () =>
+    records && arrayOfRecords ? (
+      <Table variant="simple">
+        <TableCaption>User Records</TableCaption>
+        <Thead>
           <Tr>
-            <Td>{recordPair.pop()}</Td>
-            <Td>{recordPair.pop()}</Td>
+            <Th>Email</Th>
+            <Th>Year of birth</Th>
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  ) : (
-    <Center height={"500px"}>
-      <Text>There are no records in the local storage!</Text>
-    </Center>
-  );
+        </Thead>
+        <Tbody>
+          {arrayOfRecords.map((recordPair) => (
+            <Tr>
+              <Td>{recordPair.pop()}</Td>
+              <Td>{recordPair.pop()}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    ) : (
+      <Center height={"500px"}>
+        <Text>There are no records in the local storage!</Text>
+      </Center>
+    );
+  return <React.Fragment>{renderRecords()}</React.Fragment>;
 };
 
 export default Home;
