@@ -4,13 +4,13 @@ interface Auth {
   isLoggedIn: boolean;
 }
 // Try to get initial state from local storage
-const initialRecordsState: Auth = {
-  isLoggedIn: Boolean(localStorage.getItem("is_logged_in")) || false,
+const initialAuthState: Auth = {
+  isLoggedIn: false,
 };
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: initialRecordsState,
+  initialState: initialAuthState,
   reducers: {
     logIn: (state) => {
       state.isLoggedIn = true;
@@ -20,7 +20,8 @@ export const authSlice = createSlice({
     },
   },
 });
-
 export const { logIn, logOut } = authSlice.actions;
+export const selectAuth = (state: { isLoggedIn: Auth }): Auth =>
+  state.isLoggedIn;
 
 export default authSlice.reducer;

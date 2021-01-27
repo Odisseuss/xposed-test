@@ -1,7 +1,6 @@
 import express from "express";
 import { getLoggedIn, setLoggedIn } from "../controllers/Auth";
 import { createUser, getUsers } from "../controllers/UserRecords";
-import { AuthModel } from "../models/Auth";
 const router = express.Router();
 
 router.get("/user-records", function (req, res, next) {

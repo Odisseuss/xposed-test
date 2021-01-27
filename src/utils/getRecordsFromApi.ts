@@ -1,22 +1,8 @@
 import { UserRecord } from "../store/slices/records";
 import axios from "axios";
-// Try to parse local storage data as array of users
+
+// Try to parse api res data as array of users
 // and return empty array if not possible
-export function getRecordsFromStorage() {
-  const records = localStorage.getItem("data");
-  let parsedRecordsObj = [];
-  if (records) {
-    try {
-      parsedRecordsObj = JSON.parse(records) as UserRecord[];
-      if (parsedRecordsObj && Array.isArray(parsedRecordsObj)) {
-        return parsedRecordsObj;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  return [];
-}
 export function getRecordsFromApi() {
   return axios
     .get("/user-records")

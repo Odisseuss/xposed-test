@@ -9,21 +9,13 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
-import { UserRecord } from "../store/slices/records";
-import { getRecordsFromStorage } from "../utils/getRecordsFromStorage";
-
+import { selectRecords, UserRecord } from "../store/slices/records";
+import { useSelector } from "react-redux";
 export interface HomeProps {}
 
 const Home: React.FunctionComponent<HomeProps> = () => {
-  let [arrayOfRecords, setArrayOfRecords] = React.useState(
-    new Array<UserRecord>()
-  );
-
-  // Initialize local state
-  React.useEffect(() => {
-    let records = getRecordsFromStorage();
-    setArrayOfRecords(records);
-  }, []);
+  //@ts-ignore
+  let arrayOfRecords = useSelector(selectRecords).records;
 
   return (
     <React.Fragment>
@@ -43,7 +35,7 @@ const Home: React.FunctionComponent<HomeProps> = () => {
             </Thead>
             <Tbody>
               {/* Generate table rows based on records state */}
-              {arrayOfRecords.map((recordObj, index) => (
+              {arrayOfRecords.map((recordObj: UserRecord, index: number) => (
                 <Tr key={index}>
                   <Td>{recordObj.email}</Td>
                   <Td>{recordObj.birthYear}</Td>

@@ -12,6 +12,7 @@ import { UserRecord, addRecord } from "../store/slices/records";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getRecordsFromStorage } from "../utils/getRecordsFromStorage";
+import axios from "axios";
 
 interface FormProps {}
 
@@ -56,8 +57,8 @@ const Form: React.FunctionComponent<FormProps> = () => {
     };
     let parsedRecordsObj: UserRecord[] = getRecordsFromStorage();
     parsedRecordsObj.push(user);
-    // Set local storage item
-    localStorage.setItem("data", JSON.stringify(parsedRecordsObj));
+    // Send post request to API
+    axios.post("/user-records", user);
     // Update redux store
     dispatch(addRecord(user));
     actions.resetForm({});

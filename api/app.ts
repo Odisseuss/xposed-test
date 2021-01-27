@@ -15,7 +15,7 @@ mongoose.connection.on("connected", function (ref) {
   console.log("Connected to DB!");
 
   // configure cors
-  app.use(cors());
+  app.use(cors({ origin: "http://localhost:3000" }));
   // view engine setup
   app.use(logger("dev"));
   app.use(express.json());
