@@ -16,30 +16,15 @@ import { useDispatch } from "react-redux";
 import { logOut, logIn } from "./store/slices/auth";
 import Movies from "./pages/Movies";
 import { setRecords } from "./store/slices/records";
-import { getRecordsFromApi } from "./utils/getRecordsFromStorage";
+import { getRecordsFromApi } from "./utils/getRecordsFromApi";
 import { getAuthFromApi } from "./utils/getAuthFromApi";
 
 function App() {
   const dispatch = useDispatch();
   // Set logged in state for conditionally rendering pages
   const [isLogged, setIsLogged] = useState("false");
-  // If local storage value was changed from outside
-  // Dispatch corresponding auth action
-  // and update local state
-  const checkForLocalStorageChange = React.useCallback(
-    (event) => {
-      if (event.key === "is_logged_in")
-        if (event.newValue === "false") {
-          setIsLogged("false");
-          dispatch(logOut());
-        } else if (event.newValue === "true") {
-          setIsLogged("true");
-          dispatch(logIn());
-        }
-    },
-    [dispatch]
-  );
-  // Subscribe to local storage events with given handler
+
+  // Perform requests for data
   React.useEffect(() => {
     getAuthFromApi().then((apiAuthRes) => {
       if (apiAuthRes) {
@@ -50,7 +35,7 @@ function App() {
     getRecordsFromApi().then((apiRecordsRes) => {
       if (apiRecordsRes) dispatch(setRecords(apiRecordsRes));
     });
-  }, [checkForLocalStorageChange, dispatch]);
+  }, [dispatch]);
   // App Router
   return (
     <ChakraProvider>

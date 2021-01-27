@@ -46,7 +46,7 @@ const Home: React.FunctionComponent<HomeProps> = () => {
         </Center>
       ) : (
         <Center height={"500px"}>
-          <Text>There are no records in the local storage!</Text>
+          <Text>There are no records in the database</Text>
         </Center>
       )}
     </React.Fragment>

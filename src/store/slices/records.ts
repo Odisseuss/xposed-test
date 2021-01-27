@@ -4,7 +4,7 @@ export interface UserRecord {
   birthYear: number;
   email: string;
 }
-// Try to get initial state from local storage
+// Set initial state
 const initialRecordsState: UserRecord[] = [];
 
 export const recordsSlice = createSlice({

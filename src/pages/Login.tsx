@@ -13,7 +13,6 @@ const Login: React.FunctionComponent<LoginProps> = ({ setUserLoggedIn }) => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    localStorage.setItem("is_logged_in", "true");
     setUserLoggedIn();
     dispatch(logIn());
     history.replace("/form");

@@ -8,10 +8,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Formik, Form as FormikForm, Field } from "formik";
-import { UserRecord, addRecord } from "../store/slices/records";
+import { addRecord } from "../store/slices/records";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getRecordsFromStorage } from "../utils/getRecordsFromStorage";
 import axios from "axios";
 
 interface FormProps {}
@@ -55,8 +54,6 @@ const Form: React.FunctionComponent<FormProps> = () => {
       email: values.email,
       birthYear: Number(values.birthYear),
     };
-    let parsedRecordsObj: UserRecord[] = getRecordsFromStorage();
-    parsedRecordsObj.push(user);
     // Send post request to API
     axios.post("/user-records", user);
     // Update redux store

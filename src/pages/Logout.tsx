@@ -13,7 +13,6 @@ const Logout: React.FunctionComponent<LogoutProps> = ({ setUserLoggedIn }) => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    localStorage.setItem("is_logged_in", "false");
     setUserLoggedIn();
     dispatch(logOut());
     history.replace("/");
