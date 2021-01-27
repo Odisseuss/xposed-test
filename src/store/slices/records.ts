@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface UserRecord {
+export interface UserRecord {
   birthYear: number;
   email: string;
 }

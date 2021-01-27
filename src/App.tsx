@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -14,23 +14,22 @@ import Form from "./pages/Form";
 import Logout from "./pages/Logout";
 
 function App() {
+  const [isLogged, setIsLogged] = useState(
+    localStorage.getItem("is_logged_in")
+  );
   return (
     <ChakraProvider>
       <Router>
         <Header />
         <Switch>
           <Route exact path="/login">
-            <Login />
+            <Login setUserLoggedIn={() => setIsLogged("true")} />
           </Route>
           <Route exact path="/form">
-            {localStorage.getItem("is_logged_in") === "true" ? (
-              <Form />
-            ) : (
-              <Redirect to="/login" />
-            )}
+            {isLogged === "false" ? <Redirect to="/login" /> : <Form />}
           </Route>
           <Route exact path="/logout">
-            <Logout />
+            <Logout setUserLoggedIn={() => setIsLogged("true")} />
           </Route>
           <Route path="/">
             <Home />

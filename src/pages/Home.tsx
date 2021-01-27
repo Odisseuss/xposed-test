@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import {
   Table,
   Thead,
@@ -7,49 +6,64 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   Text,
   Center,
 } from "@chakra-ui/react";
+import { UserRecord } from "../store/slices/records";
 
 export interface HomeProps {}
 
 const Home: React.FunctionComponent<HomeProps> = () => {
   const records = localStorage.getItem("data");
-  const arrayOfRecords: string[][] = [];
+  let [arrayOfRecords, setArrayOfRecords] = React.useState(
+    new Array<UserRecord>()
+  );
+
   React.useEffect(() => {
     if (records) {
-      let parsedRecordsObj = JSON.parse(records);
-      for (let i in parsedRecordsObj) {
-        arrayOfRecords.push([i, parsedRecordsObj[i]]);
+      try {
+        let parsedRecordsObj = JSON.parse(records) as UserRecord[];
+        if (parsedRecordsObj) {
+          setArrayOfRecords(parsedRecordsObj);
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   }, [records]);
-  const renderRecords = () =>
-    records && arrayOfRecords ? (
-      <Table variant="simple">
-        <TableCaption>User Records</TableCaption>
-        <Thead>
-          <Tr>
-            <Th>Email</Th>
-            <Th>Year of birth</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {arrayOfRecords.map((recordPair) => (
-            <Tr>
-              <Td>{recordPair.pop()}</Td>
-              <Td>{recordPair.pop()}</Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    ) : (
-      <Center height={"500px"}>
-        <Text>There are no records in the local storage!</Text>
-      </Center>
-    );
-  return <React.Fragment>{renderRecords()}</React.Fragment>;
+
+  return (
+    <React.Fragment>
+      {records && arrayOfRecords && arrayOfRecords.length > 0 ? (
+        <Center>
+          <Table
+            variant="simple"
+            width="80%"
+            style={{ border: "1px solid #eee" }}
+          >
+            <Thead>
+              <Tr>
+                <Th>Email</Th>
+                <Th>Year of birth</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {arrayOfRecords.map((recordObj, index) => (
+                <Tr key={index}>
+                  <Td>{recordObj.email}</Td>
+                  <Td>{recordObj.birthYear}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Center>
+      ) : (
+        <Center height={"500px"}>
+          <Text>There are no records in the local storage!</Text>
+        </Center>
+      )}
+    </React.Fragment>
+  );
 };
 
 export default Home;

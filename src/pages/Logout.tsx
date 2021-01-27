@@ -1,11 +1,23 @@
 import * as React from "react";
 import { Button, Center } from "@chakra-ui/react";
-export interface LogoutProps {}
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../store/slices/auth";
 
-const Logout: React.FunctionComponent<LogoutProps> = () => {
+export interface LogoutProps {
+  setUserLoggedIn: () => void;
+}
+
+const Logout: React.FunctionComponent<LogoutProps> = ({ setUserLoggedIn }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const handleLogin = () => {
-    console.log("clicked");
+    localStorage.setItem("is_logged_in", "false");
+    setUserLoggedIn();
+    dispatch(logOut());
+    history.replace("/");
   };
+
   return (
     <Center height={"500px"}>
       <Button colorScheme="teal" size="sm" onClick={handleLogin}>
