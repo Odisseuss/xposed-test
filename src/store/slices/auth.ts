@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 interface Auth {
   isLoggedIn: boolean;
 }
-const initialRecordsState: Auth = { isLoggedIn: false };
+// Try to get initial state from local storage
+const initialRecordsState: Auth = {
+  isLoggedIn: Boolean(localStorage.getItem("is_logged_in")) || false,
+};
 
 export const authSlice = createSlice({
   name: "auth",

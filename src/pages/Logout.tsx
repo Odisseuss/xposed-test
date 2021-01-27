@@ -11,6 +11,7 @@ export interface LogoutProps {
 const Logout: React.FunctionComponent<LogoutProps> = ({ setUserLoggedIn }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const handleLogin = () => {
     localStorage.setItem("is_logged_in", "false");
     setUserLoggedIn();
@@ -20,7 +21,7 @@ const Logout: React.FunctionComponent<LogoutProps> = ({ setUserLoggedIn }) => {
 
   return (
     <Center height={"500px"}>
-      <Button colorScheme="teal" size="sm" onClick={handleLogin}>
+      <Button colorScheme="green" size="sm" onClick={handleLogin}>
         Log out
       </Button>
     </Center>

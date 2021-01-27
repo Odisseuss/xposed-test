@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getRecordsFromStorage } from "../../utils/getRecordsFromStorage";
 
 export interface UserRecord {
   birthYear: number;
   email: string;
 }
-const initialRecordsState: UserRecord[] = [];
+// Try to get initial state from local storage
+const initialRecordsState: UserRecord[] = getRecordsFromStorage() || [];
 
 export const recordsSlice = createSlice({
   name: "records",

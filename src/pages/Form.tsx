@@ -8,23 +8,34 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Formik, Form as FormikForm, Field } from "formik";
-import { UserRecord } from "../store/slices/records";
+import { UserRecord, addRecord } from "../store/slices/records";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getRecordsFromStorage } from "../utils/getRecordsFromStorage";
+
 interface FormProps {}
 
 const Form: React.FunctionComponent<FormProps> = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
+  // Check if birth year input is smaller than the current year
   const validateBirthYear = (value: string) => {
     let error = "";
     value = value.trim();
     if (!value) {
       error = "Required";
-    } else if (isNaN(Number(value)) || value.length > 4) {
+    } else if (
+      isNaN(Number(value)) ||
+      value.length > 4 ||
+      Number(value) > new Date().getFullYear()
+    ) {
       error = "Please enter a valid birth year";
     }
     return error;
   };
+
+  // Check for correct email format
   const validateEmail = (value: string) => {
     let error = "";
     if (!value) {
@@ -43,42 +54,16 @@ const Form: React.FunctionComponent<FormProps> = () => {
       email: values.email,
       birthYear: Number(values.birthYear),
     };
-    const records = localStorage.getItem("data");
-    let parsedRecordsObj: UserRecord[] = [];
-    if (records) {
-      try {
-        parsedRecordsObj = JSON.parse(records) as UserRecord[];
-        if (parsedRecordsObj && Array.isArray(parsedRecordsObj)) {
-          console.log("Parsed is array");
-          parsedRecordsObj.push(user);
-          console.log(parsedRecordsObj);
-        }
-        localStorage.setItem("data", JSON.stringify(parsedRecordsObj));
-      } catch (e) {
-        console.log(e);
-        localStorage.setItem("data", JSON.stringify([user]));
-      }
-    } else {
-      localStorage.setItem("data", JSON.stringify([user]));
-    }
+    let parsedRecordsObj: UserRecord[] = getRecordsFromStorage();
+    parsedRecordsObj.push(user);
+    // Set local storage item
+    localStorage.setItem("data", JSON.stringify(parsedRecordsObj));
+    // Update redux store
+    dispatch(addRecord(user));
     actions.resetForm({});
     history.replace("/");
   };
-  const checkForLocalStorageChange = React.useCallback(
-    (event) => {
-      if (event.newValue === "false") {
-        history.replace("/login");
-      }
-    },
-    [history]
-  );
-  React.useEffect(() => {
-    window.addEventListener("storage", checkForLocalStorageChange);
 
-    return () => {
-      window.removeEventListener("storage", checkForLocalStorageChange);
-    };
-  }, [checkForLocalStorageChange]);
   return (
     <Center height={"500px"}>
       <Formik

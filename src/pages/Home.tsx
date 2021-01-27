@@ -10,31 +10,25 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { UserRecord } from "../store/slices/records";
+import { getRecordsFromStorage } from "../utils/getRecordsFromStorage";
 
 export interface HomeProps {}
 
 const Home: React.FunctionComponent<HomeProps> = () => {
-  const records = localStorage.getItem("data");
   let [arrayOfRecords, setArrayOfRecords] = React.useState(
     new Array<UserRecord>()
   );
 
+  // Initialize local state
   React.useEffect(() => {
-    if (records) {
-      try {
-        let parsedRecordsObj = JSON.parse(records) as UserRecord[];
-        if (parsedRecordsObj) {
-          setArrayOfRecords(parsedRecordsObj);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, [records]);
+    let records = getRecordsFromStorage();
+    setArrayOfRecords(records);
+  }, []);
 
   return (
     <React.Fragment>
-      {records && arrayOfRecords && arrayOfRecords.length > 0 ? (
+      {/* Render table if records are present, and a message if not */}
+      {arrayOfRecords && arrayOfRecords.length > 0 ? (
         <Center>
           <Table
             variant="simple"
@@ -48,6 +42,7 @@ const Home: React.FunctionComponent<HomeProps> = () => {
               </Tr>
             </Thead>
             <Tbody>
+              {/* Generate table rows based on records state */}
               {arrayOfRecords.map((recordObj, index) => (
                 <Tr key={index}>
                   <Td>{recordObj.email}</Td>

@@ -12,11 +12,40 @@ import Login from "./pages/Login";
 import Header from "./components/Header";
 import Form from "./pages/Form";
 import Logout from "./pages/Logout";
+import { useDispatch } from "react-redux";
+import { logOut, logIn } from "./store/slices/auth";
 
 function App() {
+  const dispatch = useDispatch();
+  // Set logged in state for conditionally rendering pages
   const [isLogged, setIsLogged] = useState(
     localStorage.getItem("is_logged_in")
   );
+  // If local storage value was changed from outside
+  // Dispatch corresponding auth action
+  // and update local state
+  const checkForLocalStorageChange = React.useCallback(
+    (event) => {
+      if (event.key === "is_logged_in")
+        if (event.newValue === "false") {
+          setIsLogged("false");
+          dispatch(logOut());
+        } else if (event.newValue === "true") {
+          setIsLogged("true");
+          dispatch(logIn());
+        }
+    },
+    [dispatch]
+  );
+  // Subscribe to local storage events with given handler
+  React.useEffect(() => {
+    window.addEventListener("storage", checkForLocalStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", checkForLocalStorageChange);
+    };
+  }, [checkForLocalStorageChange]);
+  // App Router
   return (
     <ChakraProvider>
       <Router>
@@ -26,10 +55,10 @@ function App() {
             <Login setUserLoggedIn={() => setIsLogged("true")} />
           </Route>
           <Route exact path="/form">
-            {isLogged === "false" ? <Redirect to="/login" /> : <Form />}
+            {isLogged === "true" ? <Form /> : <Redirect to="/login" />}
           </Route>
           <Route exact path="/logout">
-            <Logout setUserLoggedIn={() => setIsLogged("true")} />
+            <Logout setUserLoggedIn={() => setIsLogged("false")} />
           </Route>
           <Route path="/">
             <Home />
