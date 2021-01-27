@@ -1,5 +1,10 @@
 import { create } from "domain";
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 import recordsReducer from "./slices/records";
+import authReducer from "./slices/auth";
 
-export default createStore(recordsReducer);
+const rootReducer = combineReducers({
+  auth: authReducer,
+  records: recordsReducer,
+});
+export default createStore(rootReducer);
