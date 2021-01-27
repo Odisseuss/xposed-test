@@ -1,6 +1,11 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import { ChakraProvider } from "@chakra-ui/react";
 import Login from "./pages/Login";
@@ -18,7 +23,11 @@ function App() {
             <Login />
           </Route>
           <Route exact path="/form">
-            <Form />
+            {localStorage.getItem("is_logged_in") === "true" ? (
+              <Form />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
           <Route exact path="/logout">
             <Logout />
