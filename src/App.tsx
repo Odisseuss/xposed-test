@@ -14,6 +14,7 @@ import Form from "./pages/Form";
 import Logout from "./pages/Logout";
 import { useDispatch } from "react-redux";
 import { logOut, logIn } from "./store/slices/auth";
+import Movies from "./pages/Movies";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +52,9 @@ function App() {
       <Router>
         <Header />
         <Switch>
+          <Route exact path="/movies">
+            <Movies />
+          </Route>
           <Route exact path="/login">
             <Login setUserLoggedIn={() => setIsLogged("true")} />
           </Route>

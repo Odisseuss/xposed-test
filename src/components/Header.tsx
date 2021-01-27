@@ -28,6 +28,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
           <NavLink to="/login" text="Login" />
           <NavLink to="/form" text="Form" />
           <NavLink to="/logout" text="Logout" />
+          <NavLink to="/movies" text="Movies" />
         </Flex>
       </Box>
     </Flex>
