@@ -4,13 +4,14 @@ import createError from "http-errors";
 import indexRouter from "./routes/index";
 import mongoose from "mongoose";
 import cors from "cors";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 // Mongo setup
 var app = express();
-mongoose.connect(
-  "mongodb+srv://test-user:test-password@cluster0.konyb.mongodb.net/test?retryWrites=true&w=majority",
-  { useUnifiedTopology: true, useNewUrlParser: true }
-);
+mongoose.connect(process.env.MONGODB_URL || "", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
 mongoose.connection.on("connected", function (ref) {
   console.log("Connected to DB!");
 

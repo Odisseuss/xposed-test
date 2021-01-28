@@ -1,4 +1,5 @@
 import { AuthModel } from "../models/Auth";
+import { signToken } from "../serverAuth";
 
 export const getLoggedIn = (req: any, res: any) => {
   AuthModel.findById("6011c072f12a9b159826cf2f", (err: any, dbRes: any) => {
@@ -31,4 +32,13 @@ export const setLoggedIn = (req: any, res: any) => {
       }
     );
   }
+};
+export const authenticate = (req: any, res: any) => {
+  AuthModel.findById("6011c072f12a9b159826cf2f", (err: any, dbRes: any) => {
+    if (!dbRes) {
+      return res.status(500).json(null);
+    }
+    const token = signToken(dbRes);
+    res.json({ success: true, message: "Token attached.", token });
+  });
 };
